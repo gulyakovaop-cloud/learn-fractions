@@ -1,3 +1,5 @@
 # Requirements for learn-fractions project
 # Detected external dependency used for plotting
 matplotlib>=3.0
+# For Pygame version
+pygame>=2.0
