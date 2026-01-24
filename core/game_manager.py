@@ -59,13 +59,19 @@ class GameManager:
             guess: The user's guess
 
         Returns:
-            Accuracy score if guess was processed, None if already guessed
+            Accuracy score if guess was processed, None if already guessed or invalid guess
         """
         if self.guess_made or self.current_exercise is None:
             return None
 
         thinking_time = (datetime.datetime.now() - self.start_time).total_seconds()
         is_correct, self.accuracy = self.current_exercise.validate_guess(guess)
+
+        # For advanced exercises, invalid guesses (like selecting "equal" when fractions are different)
+        # should not end the question - allow the user to try again
+        if guess is None and not is_correct:
+            # Invalid guess - don't count it, let user try again
+            return None
 
         # Log the attempt
         self.logger.log_attempt(
@@ -111,9 +117,53 @@ class GameManager:
             True if the event was handled
         """
         if event.type == pygame.MOUSEBUTTONDOWN:
-            return self.handle_click(event.pos[0], event.pos[1])
+            return self._handle_mouse_click(event.pos[0], event.pos[1])
         elif event.type == pygame.KEYDOWN:
             return self._handle_keydown(event)
+        return False
+
+    def _handle_mouse_click(self, mouse_x: int, mouse_y: int) -> bool:
+        """
+        Handle mouse click events.
+
+        Args:
+            mouse_x, mouse_y: Mouse coordinates
+
+        Returns:
+            True if the click was handled
+        """
+        # Check if next button clicked
+        if (self.BUTTON_X <= mouse_x <= self.BUTTON_X + self.BUTTON_WIDTH and
+            self.BUTTON_Y <= mouse_y <= self.BUTTON_Y + self.BUTTON_HEIGHT):
+            if self.guess_made:
+                self.next_question()
+                return True
+
+        # Check if click is in exercise area (delegate to current exercise if it has click handling)
+        if not self.guess_made and self.current_exercise:
+            # For exercises with custom click handling (like fraction comparison)
+            if hasattr(self.current_exercise, 'handle_click'):
+                guess = self.current_exercise.handle_click((mouse_x, mouse_y))
+                if guess is not None:
+                    self.make_guess(guess)
+                    return True
+            # For exercises with unified input handling (like advanced fraction comparison)
+            elif hasattr(self.current_exercise, 'handle_input'):
+                # Create a mouse event and pass it to the exercise
+                mouse_event = pygame.event.Event(pygame.MOUSEBUTTONDOWN, {'pos': (mouse_x, mouse_y)})
+                guess = self.current_exercise.handle_input(mouse_event)
+                if guess is not None:
+                    self.make_guess(guess)
+                    return True
+            # For number line exercise
+            elif hasattr(self.current_exercise, 'get_click_position'):
+                line_start_x = getattr(self.current_exercise, 'LINE_START_X', 100)
+                line_end_x = getattr(self.current_exercise, 'LINE_END_X', 700)
+                if line_start_x <= mouse_x <= line_end_x:
+                    guess_value = self.current_exercise.get_click_position(mouse_x)
+                    self.make_guess(guess_value)
+                    return True
+
         return False
 
     def _handle_keydown(self, event) -> bool:

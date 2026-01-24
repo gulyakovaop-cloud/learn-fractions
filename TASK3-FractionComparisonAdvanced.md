@@ -436,3 +436,124 @@ def handle_input(self, event):
 - ProgressLogger - for data persistence with difficulty tracking
 
 This advanced implementation will challenge students to develop true mental fraction comparison skills while maintaining the clean, extensible architecture of the learning system.
+
+## Status
+
+**Implemented.** ✅
+
+## Implementation Details
+
+### New Files Created
+
+1. **`exercises/advanced_fraction_comparison_exercise.py`** - Complete implementation of the advanced fraction comparison exercise
+
+### Files Modified
+
+1. **`core/game_manager.py`** - Updated to support keyboard input handling with new `handle_input()` and `_handle_keydown()` methods
+2. **`learn_pygame_solid.py`** - Added import and included multiple `AdvancedFractionComparisonExercise` instances with different difficulty levels
+
+### Key Features Implemented
+
+#### AdvancedFractionComparisonExercise Class
+- **Text-Only Questions**: No visual aids, pure mental fraction comparison
+- **Multiple Choice Options**: A, B, C, D with distractors ("equal", "cannot determine")
+- **Keyboard Input**: Press A, B, C, D keys for selection
+- **Mouse Input**: Click on option buttons
+- **Difficulty Levels**: Easy, medium, and hard with different fraction complexities
+- **Feedback System**: Visual indicators for selected and correct answers
+
+#### Question Structure
+```
+Which is larger: 7/12 or 2/3?
+
+A) 7/12
+B) 2/3
+C) They are equal
+D) Cannot determine
+```
+
+#### Difficulty Levels
+- **Easy**: Simple fractions (denominators 2, 3, 4)
+- **Medium**: Mixed denominators (2, 3, 4, 5, 6, 8)
+- **Hard**: Complex fractions (2-12 denominators, higher values)
+
+#### Input Methods
+- **Keyboard**: A, B, C, D keys
+- **Mouse**: Click on rectangular option areas
+- **Space/Enter**: Next question after answering
+
+### Integration with Existing Architecture
+
+#### Enhanced GameManager
+- **Unified Input Handling**: Single `handle_input()` method for all event types
+- **Keyboard Support**: Added `_handle_keydown()` for keyboard event processing
+- **Backward Compatibility**: Existing mouse handling still works for other exercises
+
+#### Seamless Integration
+- **Random Selection**: All exercise types (including 3 difficulty levels of advanced) are randomly selected
+- **Unified Interface**: Same `GameManager` handles all exercise types
+- **Consistent Logging**: Progress data logged with specific exercise type including difficulty
+- **Shared UI**: Next button and overall layout work for all exercises
+
+### Testing Results
+
+✅ **Question Generation**: Successfully creates varied comparison questions for all difficulty levels  
+✅ **Multiple Choice Options**: Proper A, B, C, D options with correct answer placement  
+✅ **Keyboard Input**: A, B, C, D keys work correctly for selection  
+✅ **Mouse Input**: Clicking on option areas works properly  
+✅ **Validation Logic**: Correct scoring for right/wrong answers  
+✅ **Feedback Display**: Clear visual indicators for results  
+✅ **Difficulty Levels**: Easy, medium, hard levels generate appropriate fraction complexities  
+✅ **Integration**: Works perfectly with existing GameManager and other exercises  
+✅ **Random Selection**: All 5 exercise variants appear randomly  
+✅ **Application Startup**: No errors, smooth operation  
+
+### Educational Value
+
+The advanced exercise teaches students to:
+- **Compare fractions mentally** without visual representations
+- **Understand fraction magnitudes** through pure mathematical reasoning
+- **Develop calculation skills** for fraction comparison
+- **Practice multiple choice format** common in assessments
+- **Build confidence** in mathematical decision-making
+
+### Usage
+
+The application now randomly presents:
+1. **Number Line Exercises**: Click where fractions/decimals belong on 0-1 line
+2. **Visual Fraction Comparison**: Click which pie chart is larger/smaller
+3. **Advanced Text Comparison**: Choose A, B, C, D for larger/smaller questions (3 difficulty levels)
+
+Students can progress from visual learning (TASK2) to mental proficiency (TASK3)!
+
+### Technical Implementation Details
+
+#### Input Handling Architecture
+```python
+# GameManager.handle_input() - unified event handling
+def handle_input(self, event):
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        return self.handle_click(event.pos[0], event.pos[1])
+    elif event.type == pygame.KEYDOWN:
+        return self._handle_keydown(event)
+
+# Exercise-specific input handling
+def handle_input(self, event):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_a: return self.frac1
+        elif event.key == pygame.K_b: return self.frac2
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+        return self._handle_mouse_click(event.pos)
+```
+
+#### Difficulty-Based Fraction Generation
+```python
+def _get_difficulty_config(self):
+    configs = {
+        "easy": {"denominators": [2, 3, 4], "max_value": 1.0},
+        "medium": {"denominators": [2, 3, 4, 5, 6, 8], "max_value": 1.2},
+        "hard": {"denominators": [2, 3, 4, 5, 6, 7, 8, 9, 10, 12], "max_value": 1.5}
+    }
+```
+
+The implementation follows all specifications from TASK3.md and maintains the extensible SOLID architecture established in TASK1 v2. The advanced exercise provides a natural progression from visual to mental fraction comparison skills.

@@ -17,6 +17,7 @@ class AdvancedFractionComparisonExercise(Exercise):
         self.options: List[str] = []  # List of 4 multiple choice options
         self.difficulty = difficulty
         self.question_text = ""
+        self.invalid_selection = False  # Flag for invalid selections
 
         # UI layout constants
         self.OPTION_HEIGHT = 40
@@ -37,6 +38,9 @@ class AdvancedFractionComparisonExercise(Exercise):
 
     def generate_question(self) -> Tuple[str, Any]:
         """Generate a text-only fraction comparison question."""
+        # Reset state
+        self.invalid_selection = False
+
         # Generate two different fractions based on difficulty
         self.frac1, self.frac2 = self._generate_fraction_pair()
 
@@ -88,6 +92,14 @@ class AdvancedFractionComparisonExercise(Exercise):
             inst_surf = small_font.render(instruction, True, self.GRAY)
             screen.blit(inst_surf, (400 - inst_surf.get_width()//2, 350))
 
+        # Show invalid selection feedback
+        if self.invalid_selection:
+            invalid_font = fonts.get('small', fonts.get('font'))
+            if invalid_font:
+                invalid_text = "Please choose A or B - the fractions are not equal!"
+                invalid_surf = invalid_font.render(invalid_text, True, self.RED)
+                screen.blit(invalid_surf, (400 - invalid_surf.get_width()//2, 320))
+
     def render_feedback(self, screen, guess: Any, correct: Any, fonts: dict):
         """Render feedback showing selected and correct answers."""
         # Show selected answer
@@ -106,14 +118,19 @@ class AdvancedFractionComparisonExercise(Exercise):
 
     def handle_input(self, event) -> Any:
         """Handle keyboard or mouse input for multiple choice selection."""
+        # Reset invalid selection flag
+        self.invalid_selection = False
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 return self._get_option_value(0)
             elif event.key == pygame.K_b:
                 return self._get_option_value(1)
             elif event.key == pygame.K_c:
+                self.invalid_selection = True
                 return self._get_option_value(2)
             elif event.key == pygame.K_d:
+                self.invalid_selection = True
                 return self._get_option_value(3)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             return self._handle_mouse_click(event.pos)
@@ -179,6 +196,8 @@ class AdvancedFractionComparisonExercise(Exercise):
         for i in range(4):
             rect = self._get_option_rect(i)
             if rect.collidepoint(pos):
+                if i >= 2:  # C or D clicked
+                    self.invalid_selection = True
                 return self._get_option_value(i)
         return None
 
