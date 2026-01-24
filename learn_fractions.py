@@ -3,8 +3,59 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from fractions import Fraction
+import datetime
+import matplotlib.widgets as mwidgets
+
+cid = None
 
 plt.ion()  # Make interactive
+
+def onclick(event):
+    if event.xdata is None:
+        return
+
+    end_time = datetime.datetime.now()
+    thinking_time = (end_time - start_time).total_seconds()
+    guess = event.xdata
+    distance = abs(guess - value)
+
+    # Draw guess
+    ax.plot(guess, 0, 'bo', label="Your guess")
+
+    # Draw correct answer
+    ax.plot(value, 0, 'ro', label="Correct")
+
+    ax.legend()
+    plt.draw()
+
+    print(f"Your guess: {round(guess, 3)}")
+    print(f"Correct value: {value}")
+    print(f"Thinking time: {thinking_time:.2f} seconds")
+    print(f"Distance: {distance:.3f}")
+
+    # Log to file
+    with open('progress.log', 'a') as f:
+        f.write(f"{datetime.datetime.now().isoformat()}, {thinking_time:.2f}, {distance:.3f}\n")
+
+    if cid:
+        fig.canvas.mpl_disconnect(cid)
+    cid = None
+
+def next_question(event):
+    global value, label, start_time, cid
+    ax.clear()
+    # Draw number line
+    ax.plot([0, 1], [0, 0], linewidth=3)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(-0.5, 0.5)
+    ax.set_yticks([])
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1])
+    # Generate new number
+    value, label = random_number()
+    ax.set_title(f"Click where you think {label} is")
+    start_time = datetime.datetime.now()
+    cid = fig.canvas.mpl_connect('button_press_event', onclick)
+    plt.draw()
 
 def random_number():
     """Return a number between 0 and 1 as float and display text"""
@@ -24,6 +75,11 @@ value, label = random_number()
 
 fig, ax = plt.subplots(figsize=(8, 2))
 
+# Add next button
+button_ax = fig.add_axes([0.8, 0.05, 0.15, 0.1])
+button = mwidgets.Button(button_ax, 'Next Question')
+button.on_clicked(next_question)
+
 # Draw number line
 ax.plot([0, 1], [0, 0], linewidth=3)
 ax.set_xlim(0, 1)
@@ -32,11 +88,19 @@ ax.set_yticks([])
 ax.set_xticks([0, 0.25, 0.5, 0.75, 1])
 ax.set_title(f"Click where you think {label} is")
 
+start_time = datetime.datetime.now()
+cid = fig.canvas.mpl_connect('button_press_event', onclick)
+
+start_time = datetime.datetime.now()
+
 def onclick(event):
     if event.xdata is None:
         return
 
+    end_time = datetime.datetime.now()
+    thinking_time = (end_time - start_time).total_seconds()
     guess = event.xdata
+    distance = abs(guess - value)
 
     # Draw guess
     ax.plot(guess, 0, 'bo', label="Your guess")
@@ -49,10 +113,16 @@ def onclick(event):
 
     print(f"Your guess: {round(guess, 3)}")
     print(f"Correct value: {value}")
+    print(f"Thinking time: {thinking_time:.2f} seconds")
+    print(f"Distance: {distance:.3f}")
 
-    fig.canvas.mpl_disconnect(cid)
+    # Log to file
+    with open('progress.log', 'a') as f:
+        f.write(f"{datetime.datetime.now().isoformat()}, {thinking_time:.2f}, {distance:.3f}\n")
 
-cid = fig.canvas.mpl_connect('button_press_event', onclick)
+    if cid:
+        fig.canvas.mpl_disconnect(cid)
+    cid = None
 
 plt.show()
 
