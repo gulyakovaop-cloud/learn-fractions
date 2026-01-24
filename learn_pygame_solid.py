@@ -42,7 +42,7 @@ def main():
         AdvancedFractionComparisonExercise(difficulty="easy"),
         AdvancedFractionComparisonExercise(difficulty="medium"),
         AdvancedFractionComparisonExercise(difficulty="hard"),
-        MultiplicationExercise(difficulty="easy"),
+        # MultiplicationExercise(difficulty="easy"),
         # MultiplicationExercise(difficulty="medium"),
         # MultiplicationExercise(difficulty="hard"),
     ]
