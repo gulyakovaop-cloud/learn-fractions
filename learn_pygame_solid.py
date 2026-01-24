@@ -5,6 +5,7 @@ from core.game_manager import GameManager
 from exercises.number_line_exercise import NumberLineExercise
 from exercises.fraction_comparison_exercise import FractionComparisonExercise
 from exercises.advanced_fraction_comparison_exercise import AdvancedFractionComparisonExercise
+from exercises.multiplication_exercise import MultiplicationExercise
 
 
 def main():
@@ -41,6 +42,9 @@ def main():
         AdvancedFractionComparisonExercise(difficulty="easy"),
         AdvancedFractionComparisonExercise(difficulty="medium"),
         AdvancedFractionComparisonExercise(difficulty="hard"),
+        MultiplicationExercise(difficulty="easy"),
+        # MultiplicationExercise(difficulty="medium"),
+        # MultiplicationExercise(difficulty="hard"),
     ]
 
     # Create game manager
