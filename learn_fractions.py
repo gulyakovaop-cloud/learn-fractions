@@ -11,8 +11,15 @@ cid = None
 plt.ion()  # Make interactive
 
 def onclick(event):
+    global cid
+    if cid is None:
+        return
     if event.xdata is None:
         return
+
+    # Disconnect immediately to prevent multiple triggers
+    fig.canvas.mpl_disconnect(cid)
+    cid = None
 
     end_time = datetime.datetime.now()
     thinking_time = (end_time - start_time).total_seconds()
@@ -36,10 +43,6 @@ def onclick(event):
     # Log to file
     with open('progress.log', 'a') as f:
         f.write(f"{datetime.datetime.now().isoformat()}, {thinking_time:.2f}, {distance:.3f}\n")
-
-    if cid:
-        fig.canvas.mpl_disconnect(cid)
-    cid = None
 
 def next_question(event):
     global value, label, start_time, cid
@@ -90,39 +93,6 @@ ax.set_title(f"Click where you think {label} is")
 
 start_time = datetime.datetime.now()
 cid = fig.canvas.mpl_connect('button_press_event', onclick)
-
-start_time = datetime.datetime.now()
-
-def onclick(event):
-    if event.xdata is None:
-        return
-
-    end_time = datetime.datetime.now()
-    thinking_time = (end_time - start_time).total_seconds()
-    guess = event.xdata
-    distance = abs(guess - value)
-
-    # Draw guess
-    ax.plot(guess, 0, 'bo', label="Your guess")
-
-    # Draw correct answer
-    ax.plot(value, 0, 'ro', label="Correct")
-
-    ax.legend()
-    plt.draw()
-
-    print(f"Your guess: {round(guess, 3)}")
-    print(f"Correct value: {value}")
-    print(f"Thinking time: {thinking_time:.2f} seconds")
-    print(f"Distance: {distance:.3f}")
-
-    # Log to file
-    with open('progress.log', 'a') as f:
-        f.write(f"{datetime.datetime.now().isoformat()}, {thinking_time:.2f}, {distance:.3f}\n")
-
-    if cid:
-        fig.canvas.mpl_disconnect(cid)
-    cid = None
 
 plt.show()
 
