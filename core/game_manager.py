@@ -100,40 +100,44 @@ class GameManager:
         self._draw_button("Next", self.BUTTON_X, self.BUTTON_Y,
                          self.BUTTON_WIDTH, self.BUTTON_HEIGHT)
 
-    def handle_click(self, mouse_x: int, mouse_y: int) -> bool:
+    def handle_input(self, event) -> bool:
         """
-        Handle a mouse click event.
+        Handle input events (mouse and keyboard).
 
         Args:
-            mouse_x, mouse_y: Mouse coordinates
+            event: Pygame event
 
         Returns:
-            True if the click was handled (next button or valid guess area)
+            True if the event was handled
         """
-        # Check if next button clicked
-        if (self.BUTTON_X <= mouse_x <= self.BUTTON_X + self.BUTTON_WIDTH and
-            self.BUTTON_Y <= mouse_y <= self.BUTTON_Y + self.BUTTON_HEIGHT):
-            if self.guess_made:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            return self.handle_click(event.pos[0], event.pos[1])
+        elif event.type == pygame.KEYDOWN:
+            return self._handle_keydown(event)
+        return False
+
+    def _handle_keydown(self, event) -> bool:
+        """
+        Handle keyboard input.
+
+        Args:
+            event: Pygame KEYDOWN event
+
+        Returns:
+            True if the key was handled
+        """
+        if self.guess_made:
+            # Check for next question key
+            if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                 self.next_question()
                 return True
-
-        # Check if click is in exercise area (delegate to current exercise if it has click handling)
-        if not self.guess_made and self.current_exercise:
-            # For exercises with custom click handling (like fraction comparison)
-            if hasattr(self.current_exercise, 'handle_click'):
-                guess = self.current_exercise.handle_click((mouse_x, mouse_y))
+        else:
+            # Let current exercise handle keyboard input
+            if self.current_exercise and hasattr(self.current_exercise, 'handle_input'):
+                guess = self.current_exercise.handle_input(event)
                 if guess is not None:
                     self.make_guess(guess)
                     return True
-            # For number line exercise
-            elif hasattr(self.current_exercise, 'get_click_position'):
-                line_start_x = getattr(self.current_exercise, 'LINE_START_X', 100)
-                line_end_x = getattr(self.current_exercise, 'LINE_END_X', 700)
-                if line_start_x <= mouse_x <= line_end_x:
-                    guess_value = self.current_exercise.get_click_position(mouse_x)
-                    self.make_guess(guess_value)
-                    return True
-
         return False
 
     def _draw_button(self, text: str, x: int, y: int, width: int, height: int,

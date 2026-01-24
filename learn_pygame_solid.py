@@ -4,6 +4,7 @@ import sys
 from core.game_manager import GameManager
 from exercises.number_line_exercise import NumberLineExercise
 from exercises.fraction_comparison_exercise import FractionComparisonExercise
+from exercises.advanced_fraction_comparison_exercise import AdvancedFractionComparisonExercise
 
 
 def main():
@@ -37,6 +38,9 @@ def main():
     exercises = [
         NumberLineExercise(),
         FractionComparisonExercise(),
+        AdvancedFractionComparisonExercise(difficulty="easy"),
+        AdvancedFractionComparisonExercise(difficulty="medium"),
+        AdvancedFractionComparisonExercise(difficulty="hard"),
     ]
 
     # Create game manager
@@ -54,9 +58,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_x, mouse_y = event.pos
-                game_manager.handle_click(mouse_x, mouse_y)
+            else:
+                # Let game manager handle all input events (mouse and keyboard)
+                game_manager.handle_input(event)
 
         # Render everything
         game_manager.render()
