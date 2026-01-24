@@ -3,8 +3,6 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from fractions import Fraction
-import tkinter as tk
-from tkinter import messagebox
 
 plt.ion()  # Make interactive
 
@@ -51,8 +49,6 @@ def onclick(event):
 
     print(f"Your guess: {round(guess, 3)}")
     print(f"Correct value: {value}")
-
-    messagebox.showinfo("Result", f"Your guess: {round(guess, 3)}\nCorrect value: {value}")
 
     fig.canvas.mpl_disconnect(cid)
 
