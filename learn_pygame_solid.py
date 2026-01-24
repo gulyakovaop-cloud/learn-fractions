@@ -3,6 +3,7 @@ import sys
 
 from core.game_manager import GameManager
 from exercises.number_line_exercise import NumberLineExercise
+from exercises.fraction_comparison_exercise import FractionComparisonExercise
 
 
 def main():
@@ -35,6 +36,7 @@ def main():
     # Create exercises
     exercises = [
         NumberLineExercise(),
+        FractionComparisonExercise(),
     ]
 
     # Create game manager

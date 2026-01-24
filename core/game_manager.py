@@ -119,8 +119,14 @@ class GameManager:
 
         # Check if click is in exercise area (delegate to current exercise if it has click handling)
         if not self.guess_made and self.current_exercise:
-            # For number line exercise, check if click is on the line
-            if hasattr(self.current_exercise, 'get_click_position'):
+            # For exercises with custom click handling (like fraction comparison)
+            if hasattr(self.current_exercise, 'handle_click'):
+                guess = self.current_exercise.handle_click((mouse_x, mouse_y))
+                if guess is not None:
+                    self.make_guess(guess)
+                    return True
+            # For number line exercise
+            elif hasattr(self.current_exercise, 'get_click_position'):
                 line_start_x = getattr(self.current_exercise, 'LINE_START_X', 100)
                 line_end_x = getattr(self.current_exercise, 'LINE_END_X', 700)
                 if line_start_x <= mouse_x <= line_end_x:
