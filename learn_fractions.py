@@ -41,8 +41,9 @@ def onclick(event):
     print(f"Distance: {distance:.3f}")
 
     # Log to file
+    full_question = f"Click where you think {label} is"
     with open('progress.log', 'a') as f:
-        f.write(f"{datetime.datetime.now().isoformat()}, {thinking_time:.2f}, {distance:.3f}\n")
+        f.write(f"{datetime.datetime.now().isoformat()}, {thinking_time:.2f}, {distance:.3f}, {label}, {value}, {full_question}\n")
 
 def next_question(event):
     global value, label, start_time, cid
