@@ -14,7 +14,7 @@ def main():
     pygame.init()
 
     # Constants
-    WIDTH, HEIGHT = 800, 400
+    WIDTH, HEIGHT = 800, 600
 
     # Colors (keeping for compatibility)
     WHITE = (255, 255, 255)
@@ -42,7 +42,7 @@ def main():
         AdvancedFractionComparisonExercise(difficulty="easy"),
         AdvancedFractionComparisonExercise(difficulty="medium"),
         AdvancedFractionComparisonExercise(difficulty="hard"),
-        # MultiplicationExercise(difficulty="easy"),
+        MultiplicationExercise(difficulty="easy"),
         # MultiplicationExercise(difficulty="medium"),
         # MultiplicationExercise(difficulty="hard"),
     ]
