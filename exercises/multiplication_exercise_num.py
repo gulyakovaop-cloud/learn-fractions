@@ -34,8 +34,8 @@ class MultiplicationExerciseNum(Exercise):
 
     def generate_question(self) -> Tuple[str, Any]:
         """Generate a multiplication question with 4 choices."""
-        self.a = random.randint(1, self.max_number)
-        self.b = random.randint(1, self.max_number)
+        self.a = random.randint(2, self.max_number)
+        self.b = random.randint(2, self.max_number)
         self.correct_answer = self.a * self.b
 
         self.options = self._generate_options(self.correct_answer)

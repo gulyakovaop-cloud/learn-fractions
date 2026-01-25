@@ -40,11 +40,13 @@ def main():
     exercises = [
         NumberLineExercise(),
         FractionComparisonExercise(),
-        AdvancedFractionComparisonExercise(difficulty="easy"),
-        AdvancedFractionComparisonExercise(difficulty="medium"),
+        # AdvancedFractionComparisonExercise(difficulty="easy"),
+        # AdvancedFractionComparisonExercise(difficulty="medium"),
         AdvancedFractionComparisonExercise(difficulty="hard"),
         # MultiplicationExercise(difficulty="easy"),
         MultiplicationExerciseNum(5),
+        MultiplicationExerciseNum(6),
+        MultiplicationExerciseNum(7),
         # MultiplicationExercise(difficulty="medium"),
         # MultiplicationExercise(difficulty="hard"),
     ]
