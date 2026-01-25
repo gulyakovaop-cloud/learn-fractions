@@ -2,6 +2,7 @@ import pygame
 import sys
 
 from core.game_manager import GameManager
+from exercises.multiplication_exercise_num import MultiplicationExerciseNum
 from exercises.number_line_exercise import NumberLineExercise
 from exercises.fraction_comparison_exercise import FractionComparisonExercise
 from exercises.advanced_fraction_comparison_exercise import AdvancedFractionComparisonExercise
@@ -42,7 +43,8 @@ def main():
         AdvancedFractionComparisonExercise(difficulty="easy"),
         AdvancedFractionComparisonExercise(difficulty="medium"),
         AdvancedFractionComparisonExercise(difficulty="hard"),
-        MultiplicationExercise(difficulty="easy"),
+        # MultiplicationExercise(difficulty="easy"),
+        MultiplicationExerciseNum(5),
         # MultiplicationExercise(difficulty="medium"),
         # MultiplicationExercise(difficulty="hard"),
     ]
