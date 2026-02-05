@@ -911,3 +911,12 @@
 2026-02-02T22:38:16.413983, multiplication_choice, 6.57, 0.000, 1.00, What is 3 × 4 ?, 12, 12
 2026-02-02T22:38:28.889539, multiplication_choice, 9.00, 2.000, 0.00, What is 5 × 3 ?, 15, 17
 2026-02-02T22:39:12.366572, advanced_fraction_comparison_hard, 39.43, 0.250, 0.00, Which is smaller: 1/2 or 3/4?, 1/2, 3/4
+2026-02-04T23:54:12.832810, double_number_line, 17.64, 31.733, 0.33, What is 85% of 56?, 47.6, 79.33333333333333
+2026-02-04T23:54:36.762080, double_number_line, 18.04, 23.167, 0.77, 58.1 is what percent of 83?, 70, 93.16666666666666
+2026-02-04T23:54:46.230914, multiplication_choice, 2.39, 0.000, 1.00, What is 2 × 4 ?, 8, 8
+2026-02-04T23:54:52.209757, number_line, 4.02, 0.008, 1.00, Click where you think 0.87 is, 0.87, 0.8616666666666667
+2026-02-04T23:55:02.274051, fraction_comparison, 9.05, 0.000, 1.00, Which is larger: 1/2 or 7/8?, 7/8, 7/8
+2026-02-04T23:55:05.179235, multiplication_choice, 2.03, 0.000, 1.00, What is 4 × 3 ?, 12, 12
+2026-02-04T23:55:09.737625, number_line, 3.43, 0.002, 1.00, Click where you think 0.13 is, 0.13, 0.12833333333333333
+2026-02-04T23:55:13.255080, fraction_comparison, 2.46, 0.000, 1.00, Which is smaller: 7/9 or 1/2?, 1/2, 1/2
+2026-02-04T23:56:14.483793, double_number_line, 60.47, 168.000, 0.00, If 3.75 is 15%, what is 60%?, 15.0, 183.0
